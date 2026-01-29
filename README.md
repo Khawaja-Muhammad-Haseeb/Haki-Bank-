@@ -85,3 +85,4 @@ A complete, production-ready online banking system built with React and FastAPI 
 MIT License - Feel free to use this project for learning or commercial purposes.
 
 
+For the full setup please go to the **SETUP_GUIDE.md** file
