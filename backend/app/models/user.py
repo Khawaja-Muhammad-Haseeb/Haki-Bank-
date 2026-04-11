@@ -25,7 +25,7 @@ class User(Base):
     full_name = Column(String(150), nullable=False)
     email = Column(String(255), nullable=False, unique=True, index=True)
     password_hash = Column(String, nullable=False)
-    role = Column(Enum(UserRole), nullable=False, default=UserRole.USER)
+    role = Column(Enum(UserRole, values_callable=lambda obj: [e.value for e in obj]), nullable=False, default=UserRole.USER)
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow, index=True)
     suspended_at = Column(DateTime(timezone=True), nullable=True)

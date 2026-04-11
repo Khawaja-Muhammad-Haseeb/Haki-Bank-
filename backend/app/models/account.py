@@ -23,7 +23,7 @@ class Account(Base):
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
-    account_type = Column(Enum(AccountType), nullable=False)
+    account_type = Column(Enum(AccountType, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
     account_number = Column(String(32), nullable=False, unique=True, index=True)
     currency = Column(String(3), nullable=False, default="USD")
     balance = Column(Numeric(18, 2), nullable=False, default=0.00)
