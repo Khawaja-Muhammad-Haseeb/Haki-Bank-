@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db_jenkins:
+    image: postgres:15
+    container_name: hakibank_db_jenkins
+    environment:
+      POSTGRES_USER: hakiuser
+      POSTGRES_PASSWORD: hakipassword
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data_jenkins:/var/lib/postgresql/data
+      - ./database_schema.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hakiuser -d mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app_jenkins:
+    image: haseeb67786/hakibank:latest
+    container_name: hakibank_app_jenkins
+    environment:
+      DATABASE_URL: postgresql://hakiuser:hakipassword@db_jenkins:5432/mydb
+      SECRET_KEY: supersecretkey123456789
+      PYTHONPATH: /app/backend
+    volumes:
+      - ./backend:/app/backend
+      - ./frontend/build:/app/frontend/build
+    ports:
+      - "8001:8000"
+    depends_on:
+      db_jenkins:
+        condition: service_healthy
+
+volumes:
+  postgres_data_jenkins:
