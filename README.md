@@ -1,7 +1,5 @@
 # HakiBank - Online Banking Web Application
 
-
-
 A complete, production-ready online banking system built with React and FastAPI and PostgreSQL.
 
 ## Features
