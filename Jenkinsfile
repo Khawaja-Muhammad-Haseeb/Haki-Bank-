@@ -43,6 +43,17 @@ pipeline {
     post {
         always {
             sh 'cat test_results.txt || true'
+            emailext (
+                subject: "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """<p>Build ${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'</p>
+                    <p>Check console output at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
+                recipientProviders: [
+                    [$class: 'CulpritsRecipientProvider'],      // Sends to the person who committed the code
+                    [$class: 'DevelopersRecipientProvider'],    // Sends to all committers in the cycle
+                    [$class: 'RequesterRecipientProvider']      // Sends to the person who clicked "Build Now" manually
+                ],
+                contentType: 'text/html'
+            )
         }
         success {
             echo 'All tests passed! Pipeline completed successfully!'
