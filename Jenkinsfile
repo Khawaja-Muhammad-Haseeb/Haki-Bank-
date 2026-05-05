@@ -33,8 +33,10 @@ pipeline {
         }
         stage('Run Selenium Tests') {
             steps {
-                sh 'pip3 install selenium pytest webdriver-manager --break-system-packages'
-                sh 'pytest test_hakibank.py -v --tb=short 2>&1 | tee test_results.txt'
+                sh '''
+                python3 -m pip install selenium pytest webdriver-manager --break-system-packages
+                python3 -m pytest test_hakibank.py -v --tb=short 2>&1 | tee test_results.txt
+                '''
             }
         }
     }
