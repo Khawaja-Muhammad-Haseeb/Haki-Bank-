@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "haseeb67786/hakibank:latest"
-        COMPOSE_FILE = "docker-compose.jenkins.yml"
+        COMPOSE_FILE = "docker-compose.yml"
     }
 
     stages {
