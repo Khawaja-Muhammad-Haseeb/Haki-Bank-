@@ -50,20 +50,5 @@ pipeline {
         failure {
             echo 'Pipeline failed!'
         }
-        always {
-            emailext(
-                subject: "[Jenkins] ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-                body: """
-                    <h2>Build Status: ${currentBuild.currentResult}</h2>
-                    <p><b>Job:</b> ${env.JOB_NAME}</p>
-                    <p><b>Build:</b> ${env.BUILD_NUMBER}</p>
-                    <p><b>Link:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                """,
-                mimeType: 'text/html',
-                recipientProviders: [
-                    [$class: 'CulpritsRecipientProvider']
-                ]
-            )
-        }
     }
 }
