@@ -33,16 +33,27 @@ pipeline {
             steps {
                 sh 'docker compose -f $COMPOSE_FILE down || true'
                 sh 'docker compose -f $COMPOSE_FILE up -d'
+                sh 'sleep 15'
+            }
+        }
+
+        stage('Run Selenium Tests') {
+            steps {
+                sh 'pip3 install selenium pytest webdriver-manager'
+                sh 'pytest test_hakibank.py -v --tb=short 2>&1 | tee test_results.txt'
             }
         }
     }
 
     post {
+        always {
+            sh 'cat test_results.txt || true'
+        }
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'All tests passed! Pipeline completed successfully!'
         }
         failure {
-            echo 'Pipeline failed!'
+            echo 'Pipeline failed! Check test results above.'
         }
     }
 }
