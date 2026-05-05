@@ -52,7 +52,7 @@ pipeline {
                     [$class: 'DevelopersRecipientProvider'],    // Sends to all committers in the cycle
                     [$class: 'RequesterRecipientProvider']      // Sends to the person who clicked "Build Now" manually
                 ],
-                contentType: 'text/html'
+                mimeType: 'text/html'
             )
         }
         success {
