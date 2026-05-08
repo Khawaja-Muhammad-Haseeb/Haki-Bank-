@@ -43,8 +43,6 @@ pipeline {
     post {
         always {
             sh 'cat test_results.txt || true'
-            // Stop container after testing
-            sh 'docker compose -f $COMPOSE_FILE down || true'
             emailext (
                 subject: "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """<p>Build ${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'</p>
